@@ -1,9 +1,16 @@
 Package: rmdxtra
-Title: What the Package Does (one line, title case)
+Title: Extra output formats for rmarkdown
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Authors@R: as.person("Albert Z Wang <albert.zhao.wang@gmail.com> [aut,cre]")
 Description: What the package does (one paragraph).
-Depends: R (>= 3.3.1)
+Depends:
+    R (>= 3.3.1)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 5.0.1
+Imports: dplyr,
+    stringr,
+    rmarkdown,
+    purrr,
+    jsonlite
