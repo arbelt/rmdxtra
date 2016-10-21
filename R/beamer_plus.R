@@ -1,9 +1,10 @@
+import:::from(rmarkdown, pandoc, quoted)
 
 #' Beamer presentation with additional arguments
 #'
 #' @export
 #' @importFrom purrr detect_index map map_chr reduce
-#' @importFrom rmarkdown pandoc_variable_arg
+#' @importFrom rmarkdown pandoc_variable_arg pandoc_path_arg
 beamer_plus <- function(...,
                         themeoptions = "default",
                         colorthemeoptions = "default",
@@ -13,12 +14,26 @@ beamer_plus <- function(...,
   format$inherits <- "beamer_presentation"
 
   tmpl_idx <- format$pandoc$args %>%
-    detect_index(~ . == "--template") %>% `+`(1)
+    detect_index(~ . == "--template")
 
-  newtmpl <- patch_beamer_template(format$pandoc$args[tmpl_idx])
-  format$pandoc$args[tmpl_idx] <- newtmpl
+
+  if (tmpl_idx == 0){
+    oldtmpl <- quoted(pandoc()) %>% c("-D", "beamer") %>%
+      paste(collapse = " ") %>% system
+  } else {
+    oldtmpl <- readLines(format$pandoc$args[tmpl_idx + 1])
+  }
 
   args <- format$pandoc$args
+
+  newtmpl <- patch_beamer_template(oldtmpl)
+
+  if (tmpl_idx != 0){
+    args[tmpl_idx + 1] <- newtmpl
+  } else {
+    args <- c(args, "--template", pandoc_path_arg(newtmpl))
+  }
+
 
   if(!identical(themeoptions, "default")){
     args <- c(args, pandoc_variable_arg("themeoptions", themeoptions))
@@ -37,8 +52,7 @@ beamer_plus <- function(...,
 
 #' @importFrom stringr str_replace
 #' @importFrom dplyr %>%
-patch_beamer_template <- function(filepath){
-  template <- readLines(filepath)
+patch_beamer_template <- function(template){
   template <- template %>%
     patch_command_with_options("usecolortheme", "colorthemeoptions") %>%
     patch_command_with_options("usetheme", "themeoptions") %>%
