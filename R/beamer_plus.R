@@ -18,8 +18,11 @@ beamer_plus <- function(...,
 
 
   if (tmpl_idx == 0){
-    oldtmpl <- quoted(pandoc()) %>% c("-D", "beamer") %>%
-      paste(collapse = " ") %>% system
+    command <- quoted(pandoc()) %>% c("-D", "beamer") %>%
+      paste(collapse = " ")
+    oldtmpl <- suppressWarnings({
+      system(command, intern = TRUE)
+    })
   } else {
     oldtmpl <- readLines(format$pandoc$args[tmpl_idx + 1])
   }
