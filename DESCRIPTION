@@ -11,7 +11,7 @@ LazyData: true
 RoxygenNote: 5.0.1
 Imports: dplyr,
     stringr,
-    rmarkdown,
+    rmarkdown (>= 1.1),
     purrr,
     import,
     azwmisc.fonts,
