@@ -13,5 +13,8 @@ Imports: dplyr,
     stringr,
     rmarkdown,
     purrr,
-    jsonlite,
-    import
+    import,
+    azwmisc.fonts,
+    yaml
+Remotes:
+  arbelt/azwmisc.fonts

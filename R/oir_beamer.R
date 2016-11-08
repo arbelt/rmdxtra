@@ -1,0 +1,48 @@
+#' OIR beamer format
+#'
+#' @export
+#' @importFrom rmarkdown beamer_presentation
+oir_beamer <- function(..., includes = list(), latex_engine = "xelatex"){
+  includes <- list(in_header = oir_beamer_header())
+  format <- beamer_plus(..., latex_engine = latex_engine, includes = includes)
+  format$pandoc$args <- c(format$pandoc$args, oir_beamer_yaml())
+  format
+}
+
+#' Beamer header includes
+oir_beamer_header <- function(){
+  system.file("resources", "templates", "oir_beamer_header.sty", package = packageName())
+}
+
+#' Generate additional YAML metadata
+#' @importFrom azwmisc.fonts get_font fontpath fontfile fontdir createFontFamily
+#' @importFrom yaml as.yaml
+oir_beamer_yaml <- function(){
+  meta <- list()
+  meta$fonts <- list()
+  fsc <- createFontFamily("FiraSansCondensed", reg_wt = "Book", bold_wt = "Medium")
+  mainfont <- createFontFamily("CooperHewitt", reg_wt = "Book", bold_wt = "Semibold")
+  meta$mainfont <- "CooperHewitt"
+  meta$mainfontoptions <- fontfamily_fontspec_options(mainfont)
+  meta$fonts <- list(
+    list(name = "Fira Sans Condensed",
+         latexcmd = "\\firasanscond",
+         options = fontfamily_fontspec_options(fsc))
+  )
+  meta$theme <- "metropolis"
+  meta$colortheme <- "owl"
+  meta$colorthemeoptions <- "snowy"
+  meta$classoption <- "aspectratio=1610,11pt"
+  meta$themeoptions <- list(
+    "progressbar=foot",
+    "titleformat title=regular",
+    "titleformat section=regular",
+    "numbering=fraction"
+  )
+  meta$monofont <- "FiraMono"
+  meta$monofontoptions <- fontfamily_fontspec_options(createFontFamily("FiraMono", reg_wt = "Regular"))
+  tempfile <- tempfile(fileext = ".yaml")
+  metablock <- paste(c("---", as.yaml(meta), "---"), sep = "\n")
+  writeLines(enc2utf8(metablock), tempfile, useBytes = TRUE)
+  tempfile
+}
