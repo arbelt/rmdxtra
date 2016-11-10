@@ -1,3 +1,7 @@
+#' @importFrom methods slotNames
+#' @importFrom utils head packageName tail
+NULL
+
 import:::from(rmarkdown, pandoc, quoted)
 
 #' Beamer presentation with additional arguments
@@ -8,7 +12,9 @@ import:::from(rmarkdown, pandoc, quoted)
 beamer_plus <- function(...,
                         themeoptions = "default",
                         colorthemeoptions = "default",
-                        fontthemeoptions = "default"
+                        fontthemeoptions = "default",
+                        fontsize = "11pt",
+                        classoption = list("aspectratio=1610")
                         ){
   format <- rmarkdown::beamer_presentation(...)
   format$inherits <- "beamer_presentation"
@@ -48,9 +54,26 @@ beamer_plus <- function(...,
     args <- c(args, pandoc_variable_arg("fontthemeoptions", fontthemeoptions))
   }
 
+  args <- c(args, beamer_plus_yaml(fontsize = fontsize, classoption = classoption))
+
   format$pandoc$args <- args
 
   format
+}
+
+#' @importFrom yaml as.yaml
+beamer_plus_yaml <- function(...){
+  tempfile <- tempfile(fileext = ".yaml")
+  meta <- list(...)
+  meta_yaml <- c(
+    "---",
+    as.yaml(meta),
+    "---"
+  )
+  writeLines(enc2utf8(paste(meta_yaml, collapse = "\n")),
+             tempfile,
+             useBytes = TRUE)
+  tempfile
 }
 
 #' @importFrom stringr str_replace str_detect

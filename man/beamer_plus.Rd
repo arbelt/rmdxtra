@@ -5,7 +5,8 @@
 \title{Beamer presentation with additional arguments}
 \usage{
 beamer_plus(..., themeoptions = "default", colorthemeoptions = "default",
-  fontthemeoptions = "default")
+  fontthemeoptions = "default", fontsize = "11pt",
+  classoption = list("aspectratio=1610"))
 }
 \description{
 Beamer presentation with additional arguments

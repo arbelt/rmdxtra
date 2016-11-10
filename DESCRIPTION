@@ -1,6 +1,6 @@
 Package: rmdxtra
 Title: Extra output formats for rmarkdown
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: as.person("Albert Z Wang <albert.zhao.wang@gmail.com> [aut,cre]")
 Description: What the package does (one paragraph).
 Depends:
@@ -15,6 +15,7 @@ Imports: dplyr,
     purrr,
     import,
     azwmisc.fonts,
-    yaml
+    yaml,
+    methods
 Remotes:
   arbelt/azwmisc.fonts

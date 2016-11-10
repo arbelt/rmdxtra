@@ -4,7 +4,7 @@
 \alias{oir_beamer_yaml}
 \title{Generate additional YAML metadata}
 \usage{
-oir_beamer_yaml()
+oir_beamer_yaml(..., textfont = "FiraSans")
 }
 \description{
 Generate additional YAML metadata

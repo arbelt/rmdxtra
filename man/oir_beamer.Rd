@@ -4,7 +4,18 @@
 \alias{oir_beamer}
 \title{OIR beamer format}
 \usage{
-oir_beamer(..., includes = list(), latex_engine = "xelatex")
+oir_beamer(..., includes = list(), latex_engine = "xelatex",
+  textfont = "FiraSans")
+}
+\arguments{
+\item{...}{Parameters passed to \code{beamer_presentation}}
+
+\item{includes}{Additional includes passed to \code{beamer_presentation}}
+
+\item{latex_engine}{Passed to \code{beamer_presentation}}
+
+\item{textfont}{Font to use for body text. Must be font provided in package
+\code{azwmisc.fonts}}
 }
 \description{
 OIR beamer format

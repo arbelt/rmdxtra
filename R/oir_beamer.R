@@ -1,11 +1,18 @@
 #' OIR beamer format
 #'
+#' @param ... Parameters passed to \code{beamer_presentation}
+#' @param includes Additional includes passed to \code{beamer_presentation}
+#' @param latex_engine Passed to \code{beamer_presentation}
+#' @param textfont Font to use for body text. Must be font provided in package
+#'   \code{azwmisc.fonts}
 #' @export
+#' @importFrom azwmisc.fonts font_family
 #' @importFrom rmarkdown beamer_presentation
-oir_beamer <- function(..., includes = list(), latex_engine = "xelatex"){
+oir_beamer <- function(..., includes = list(), latex_engine = "xelatex",
+                       textfont = "FiraSans"){
   includes <- list(in_header = oir_beamer_header())
   format <- beamer_plus(..., latex_engine = latex_engine, includes = includes)
-  format$pandoc$args <- c(format$pandoc$args, oir_beamer_yaml())
+  format$pandoc$args <- c(format$pandoc$args, oir_beamer_yaml(textfont = textfont))
   format
 }
 
@@ -17,12 +24,13 @@ oir_beamer_header <- function(){
 #' Generate additional YAML metadata
 #' @importFrom azwmisc.fonts get_font fontpath fontfile fontdir createFontFamily
 #' @importFrom yaml as.yaml
-oir_beamer_yaml <- function(){
+oir_beamer_yaml <- function(..., textfont = "FiraSans"){
   meta <- list()
   meta$fonts <- list()
   fsc <- createFontFamily("FiraSansCondensed", reg_wt = "Book", bold_wt = "Medium")
-  mainfont <- createFontFamily("CooperHewitt", reg_wt = "Book", bold_wt = "Semibold")
-  meta$mainfont <- "CooperHewitt"
+  mainfont <- font_family(textfont, reg_wt = "Book", bold_wt = "Semibold")
+  ## mainfont <- createFontFamily("CooperHewitt", reg_wt = "Book", bold_wt = "Semibold")
+  meta$mainfont <- textfont
   meta$mainfontoptions <- fontfamily_fontspec_options(mainfont)
   meta$fonts <- list(
     list(name = "Fira Sans Condensed",
