@@ -48,7 +48,7 @@ It passes `fontsize` and `classoption` to pandoc. `textfont` can be one of
 "FiraSans", "FiraSansCondensed", or "CooperHewitt" (perhaps more later, but
 these are the ones packages in the helper package `azwmisc.fonts`).
 
-```
+```yaml
 output:
   rmdxtra::oir_beamer:
     fontsize: 11pt
