@@ -10,7 +10,7 @@
 #' @importFrom rmarkdown beamer_presentation
 oir_beamer <- function(..., includes = list(), latex_engine = "xelatex",
                        textfont = "FiraSans"){
-  includes <- list(in_header = oir_beamer_header())
+  includes$in_header <- c(oir_beamer_header(), includes$in_header)
   format <- beamer_plus(..., latex_engine = latex_engine, includes = includes)
   format$pandoc$args <- c(format$pandoc$args, oir_beamer_yaml(textfont = textfont))
   format
